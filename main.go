@@ -59,7 +59,9 @@ func main() {
 			if isEven {
 				fmt.Println(fmt.Sprintf("%v is even Number. PASS", string(lastCharater)))
 			} else {
-				fmt.Println(fmt.Sprintf("%v is odd Number. !PASS", string(lastCharater)))
+				msg := fmt.Sprintf("%v is odd Number. !PASS", string(lastCharater))
+				fmt.Println(msg)
+				return c.JSON(msg)
 			}
 			time.Sleep(1 * time.Second) // Wait for 1 second before making the next request
 		}
