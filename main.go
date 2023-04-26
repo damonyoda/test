@@ -1,22 +1,45 @@
 package main
 
-import "fmt"
+import (
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"time"
 
-func f(n int) {
-	for i := 1; i <= n; i++ {
-		switch {
-		case i%3 == 0 && i%5 == 0:
-			fmt.Println("fizzbuzz")
-		case i%3 == 0:
-			fmt.Println("fizz")
-		case i%5 == 0:
-			fmt.Println("buzz")
-		default:
-			fmt.Println(i)
-		}
-	}
-}
+	"github.com/gofiber/fiber/v2"
+)
+
+var hash string
 
 func main() {
-	f(15)
+	app := fiber.New()
+
+	app.Get("/hash", func(c *fiber.Ctx) error {
+		time.Sleep(1 * time.Second)
+		hash, err := generateRandomHash()
+		if err != nil {
+			return c.Status(500).SendString(fmt.Sprintf("Error generating hash, %v", err))
+		}
+
+		return c.JSON(fiber.Map{"hash": hash})
+	})
+
+	app.Listen(":3000")
+}
+
+func generateRandomHash() (string, error) {
+	b := make([]byte, 32)
+	_, err := rand.Read(b)
+	if err != nil {
+		return "", err
+	}
+
+	h := sha256.New()
+	_, err = h.Write(b)
+	if err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(h.Sum(nil)), nil
 }
