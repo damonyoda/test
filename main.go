@@ -57,9 +57,9 @@ func main() {
 				continue
 			}
 			if isEven {
-				fmt.Println(fmt.Sprintf("%v is even Number. PASS", string(lastCharater)))
+				fmt.Println(fmt.Sprintf("%v is even Number.  Does not Pass", string(lastCharater)))
 			} else {
-				msg := fmt.Sprintf("%v is odd Number. !PASS", string(lastCharater))
+				msg := fmt.Sprintf("%v is odd Number. PASS", string(lastCharater))
 				fmt.Println(msg)
 				return c.JSON(msg)
 			}
